@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  A serverless application which will update the Drift Detection status across 
+  CloudFormation stacks within a region
+
+Globals:
+  Function:
+    Timeout: 300
+    Runtime: python3.6
+
+Resources:
+  DriftDetectionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Executes drift detection across CloudFormation stacks in the region
+      CodeUri: cf_drift_detection/
+      Handler: app.lambda_handler
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - cloudformation:DetectStackDrift
+                - cloudformation:DescribeStackDriftDetectionStatus
+                - cloudformation:DescribeStackResourceDrifts
+                - cloudformation:DescribeStacks
+                - cloudformation:ListStackResources
+                - cloudformation:ListStacks
+              Resource: '*'
+      Events:
+        RunDaily:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 day)
+      Tags:
+        Environment: Dev
+        Project: CloudFormation Drift Detection
