@@ -22,10 +22,14 @@ Resources:
             - Effect: Allow
               Action:
                 - cloudformation:DetectStackDrift
-                - cloudformation:DescribeStackDriftDetectionStatus
                 - cloudformation:DescribeStackResourceDrifts
                 - cloudformation:DescribeStacks
                 - cloudformation:ListStackResources
+              Resource:
+                Fn::Sub: arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/*
+            - Effect: Allow
+              Action:
+                - cloudformation:DescribeStackDriftDetectionStatus
                 - cloudformation:ListStacks
               Resource: '*'
       Events:
@@ -36,3 +40,16 @@ Resources:
       Tags:
         Environment: Dev
         Project: CloudFormation Drift Detection
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: cloudFormation-drift-detection-updater
+    Description: A serverless application which will update the Drift Detection status across CloudFormation stacks within a region
+    Author: Nick Ragusa
+    SpdxLicenseId: MIT
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['cloudformation', 'python3']
+    HomePageUrl: https://github.com/nragusa/cloudformation-drift-detection
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/nragusa/cloudformation-drift-detection
