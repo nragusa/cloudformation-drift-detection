@@ -48,7 +48,7 @@ Metadata:
     Author: Nick Ragusa
     SpdxLicenseId: MIT
     LicenseUrl: LICENSE
-    ReadmeUrl: README.md
+    ReadmeUrl: README.aws.md
     Labels: ['cloudformation', 'python3']
     HomePageUrl: https://github.com/nragusa/cloudformation-drift-detection
     SemanticVersion: 0.0.1
